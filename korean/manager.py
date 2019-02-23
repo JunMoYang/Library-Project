@@ -83,6 +83,7 @@ class koreanManager:
             result.append(list(conver))
         return result
 
+    # 'ㄱ' : 1획 기준, 획수 계산.
     def countType0(self, cjjSungList):
         resultType0 = list()
         for v in cjjSungList:
@@ -97,6 +98,7 @@ class koreanManager:
             resultType0.append(type0)
         return resultType0
 
+    # 'ㄱ' : 2획 기준, 획수 계산.
     def countType1(self, cjjSungList):
         resultType1 = list()
         for v in cjjSungList:
@@ -110,3 +112,41 @@ class koreanManager:
                     type1.append(self.__jongSungListType1[v[i]])
             resultType1.append(type1)
         return resultType1
+
+    # 궁합계산
+    def sum(self, cjjSungCountList):
+        sumList = list()
+        result = list()
+        count = 0
+        for v in cjjSungCountList:
+            sumValue = v[0] + v[1] + v[2]
+            if sumValue > 9:
+                result.append(int(str(sumValue)[1:]))
+            else:
+                result.append(sumValue)
+        for i in range(len(result) * 3):
+            if count == 0:
+                if len(result) != 1:
+                    sumValue = result.pop(0) + result[0]
+                    if sumValue > 9:
+                        sumList.append(int(str(sumValue)[1:]))
+                    else:
+                        sumList.append(sumValue)
+                else:
+                    result.clear()
+                    count = 1
+
+            elif count == 1:
+                if len(sumList) != 1:
+                    sumValue = sumList.pop(0) + sumList[0]
+                    if sumValue > 9:
+                        result.append(int(str(sumValue)[1:]))
+                    else:
+                        result.append(sumValue)
+                else:
+                    sumList.clear()
+                    count = 0
+            else:
+                break
+
+        return ''.join(str(e) for e in result)
