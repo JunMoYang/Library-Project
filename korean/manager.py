@@ -119,23 +119,20 @@ class koreanManager:
         result = list()
         for v in cjjSungCountList:
             sumValue = v[0] + v[1] + v[2]
-            if sumValue > 9:
-                result.append(int(str(sumValue)[1:]))
-            else:
-                result.append(sumValue)
+            result.append(self.__checkNum(sumValue))
         for _ in range(len(result) * 3):
-            print("result : ", result)
             if len(result) != 1:
                 sumValue = result.pop(0) + result[0]
-                print("sumValue : ", sumValue)
-                if sumValue > 9:
-                    sumList.append(int(str(sumValue)[1:]))
-                else:
-                    sumList.append(sumValue)
-                print("sumList : ", sumList)
+                sumList.append(self.__checkNum(sumValue))
             else:
                 result.clear()
                 result = list(sumList)
                 sumList.clear()
 
         return ''.join(str(e) for e in result)
+
+    def __checkNum(self, num):
+        if num > 9:
+            return int(str(num)[1:])
+        else:
+            return num
