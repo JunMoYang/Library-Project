@@ -1,3 +1,4 @@
+import operator
 import unicodedata
 
 
@@ -9,13 +10,27 @@ class nameManager:
     def getName(self):
         return self.__name
 
-    def isString(self):
+    # 'type', '길이', '언어'를 체크.
+    def verification(self):
+        if not self.__isString():
+            print("Error Type")
+            return False
+        elif not self.__checkLen():
+            print("Error Length")
+            return False
+        elif not self.__isKorean():
+            print("Error Language")
+            return False
+        else:
+            return True
+
+    def __isString(self):
         if type(self.__name) == str:
             return True
         else:
             return False
 
-    def isKorean(self):
+    def __isKorean(self):
         for v in self.__name:
             if unicodedata.name(v).find("HANGUL") != -1:
                 continue
@@ -24,7 +39,7 @@ class nameManager:
 
         return True
 
-    def checkLen(self):
+    def __checkLen(self):
         if len(self.__name) == 3:
             return True
         else:
@@ -52,4 +67,9 @@ class namesManager:
             else:
                 self.__name[i + i + 1] = self.__name2[i]
 
-        return self.__name
+        sortedNames = sorted(self.__name.items(), key=operator.itemgetter(0))
+        result = list()
+        for i in range(len(sortedNames)):
+            result.append(sortedNames[i][1])
+
+        return result

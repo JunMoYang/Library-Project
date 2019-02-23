@@ -66,7 +66,7 @@ class koreanManager:
     def __init__(self, mixNames):
         self.__mixNames = list(mixNames)
 
-    def convert(self):
+    def __convert(self):
         result = list()
         for keyword in self.__mixNames:
             conver = ""
@@ -84,7 +84,8 @@ class koreanManager:
         return result
 
     # 'ㄱ' : 1획 기준, 획수 계산.
-    def countType0(self, cjjSungList):
+    def countType0(self):
+        cjjSungList = self.__convert()
         resultType0 = list()
         for v in cjjSungList:
             type0 = list()
@@ -96,10 +97,12 @@ class koreanManager:
                 else:
                     type0.append(self.__jongSungListType0[v[i]])
             resultType0.append(type0)
-        return resultType0
+
+        return self.__sum(resultType0)
 
     # 'ㄱ' : 2획 기준, 획수 계산.
-    def countType1(self, cjjSungList):
+    def countType1(self):
+        cjjSungList = self.__convert()
         resultType1 = list()
         for v in cjjSungList:
             type1 = list()
@@ -111,10 +114,10 @@ class koreanManager:
                 else:
                     type1.append(self.__jongSungListType1[v[i]])
             resultType1.append(type1)
-        return resultType1
+        return self.__sum(resultType1)
 
     # 궁합계산
-    def sum(self, cjjSungCountList):
+    def __sum(self, cjjSungCountList):
         sumList = list()
         result = list()
         for v in cjjSungCountList:
