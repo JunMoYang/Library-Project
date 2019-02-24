@@ -1,5 +1,9 @@
 from korean import manager
 
-kManager = manager.korean("홍김길두동뷁")
+kManager = manager.korean(mixNames="a김길두동뷁")
 
-print(kManager.countType0(), kManager.countType1())
+resultSumType0 = kManager.countType0()
+if resultSumType0:
+    print(resultSumType0)
+else:
+    print("재시도해 주세요.")

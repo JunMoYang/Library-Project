@@ -28,19 +28,15 @@ class names:
             result = list()
             for i in range(len(sortedNames)):
                 result.append(sortedNames[i][1])
-
             return result
+        else:
+            return False
 
     # 'type', '길이', '언어'를 체크.
     def __verification(self):
-        if not self.__isString(self.__name1) and not self.__isString(self.__name2):
-            print("Error Type")
+        if not self.__isString(self.__name1) or not self.__isString(self.__name2):
             return False
-        elif not self.__checkLen(self.__name1) and not self.__checkLen(self.__name2):
-            print("Error Length")
-            return False
-        elif not self.__isKorean(self.__name1) and not self.__isKorean(self.__name2):
-            print("Error Language")
+        elif not self.__checkLen(self.__name1) or not self.__checkLen(self.__name2):
             return False
         else:
             return True
@@ -49,19 +45,12 @@ class names:
         if type(name) == str:
             return True
         else:
+            print("Error Type : ", name)
             return False
-
-    def __isKorean(self, name):
-        for v in name:
-            if unicodedata.name(v).find("HANGUL") != -1:
-                continue
-            else:
-                return False
-
-        return True
 
     def __checkLen(self, name):
         if len(name) == 3:
             return True
         else:
+            print("Error Length : ", name)
             return False

@@ -25,6 +25,7 @@ https://github.com/neotune/python-korean-handler
 	중성문자코드 = 중성 + 0x1161 // ('ㅏ')
 	종성문자코드 = 종성 + 0x11A8 - 1 // (종성이 없는 경우가 있으므로 1을 뺌)
 """
+import unicodedata
 
 
 class korean:
@@ -67,53 +68,61 @@ class korean:
         self.__mixNames = list(mixNames)
 
     def __convert(self):
-        result = list()
-        for keyword in self.__mixNames:
-            conver = ""
-            char_code = ord(keyword) - self.__baseCode
-            char1 = int(char_code / self.__choSung)
-            conver += self.__choSungList[char1]
-            char2 = int((char_code - (self.__choSung * char1)) / self.__jungSung)
-            conver += self.__jungSungList[char2]
-            char3 = int((char_code - (self.__choSung * char1) - (self.__jungSung * char2)))
-            if char3 == 0:
-                conver += ' '
-            else:
-                conver += self.__jongSungList[char3]
-            result.append(list(conver))
-        return result
+        if self.__isKorean(self.__mixNames):
+            result = list()
+            for keyword in self.__mixNames:
+                conver = ""
+                char_code = ord(keyword) - self.__baseCode
+                char1 = int(char_code / self.__choSung)
+                conver += self.__choSungList[char1]
+                char2 = int((char_code - (self.__choSung * char1)) / self.__jungSung)
+                conver += self.__jungSungList[char2]
+                char3 = int((char_code - (self.__choSung * char1) - (self.__jungSung * char2)))
+                if char3 == 0:
+                    conver += ' '
+                else:
+                    conver += self.__jongSungList[char3]
+                result.append(list(conver))
+            return result
+        else:
+            return False
 
     # 'ㄱ' : 1획 기준, 획수 계산.
     def countType0(self):
         cjjSungList = self.__convert()
-        resultType0 = list()
-        for v in cjjSungList:
-            type0 = list()
-            for i in range(len(v)):
-                if i == 0:
-                    type0.append(self.__choSungListType0[v[i]])
-                elif i == 1:
-                    type0.append(self.__jungSungListType[v[i]])
-                else:
-                    type0.append(self.__jongSungListType0[v[i]])
-            resultType0.append(type0)
-
+        if not cjjSungList:
+            return False
+        else:
+            resultType0 = list()
+            for v in cjjSungList:
+                type0 = list()
+                for i in range(len(v)):
+                    if i == 0:
+                        type0.append(self.__choSungListType0[v[i]])
+                    elif i == 1:
+                        type0.append(self.__jungSungListType[v[i]])
+                    else:
+                        type0.append(self.__jongSungListType0[v[i]])
+                resultType0.append(type0)
         return self.__sum(resultType0)
 
     # 'ㄱ' : 2획 기준, 획수 계산.
     def countType1(self):
         cjjSungList = self.__convert()
-        resultType1 = list()
-        for v in cjjSungList:
-            type1 = list()
-            for i in range(len(v)):
-                if i == 0:
-                    type1.append(self.__choSungListType1[v[i]])
-                elif i == 1:
-                    type1.append(self.__jungSungListType[v[i]])
-                else:
-                    type1.append(self.__jongSungListType1[v[i]])
-            resultType1.append(type1)
+        if not cjjSungList:
+            return False
+        else:
+            resultType1 = list()
+            for v in cjjSungList:
+                type1 = list()
+                for i in range(len(v)):
+                    if i == 0:
+                        type1.append(self.__choSungListType1[v[i]])
+                    elif i == 1:
+                        type1.append(self.__jungSungListType[v[i]])
+                    else:
+                        type1.append(self.__jongSungListType1[v[i]])
+                resultType1.append(type1)
         return self.__sum(resultType1)
 
     # 궁합계산
@@ -139,3 +148,13 @@ class korean:
             return int(str(num)[1:])
         else:
             return num
+
+    def __isKorean(self, names):
+        for v in names:
+            if unicodedata.name(v).find("HANGUL") != -1:
+                continue
+            else:
+                print("Error Language : ", names)
+                return False
+
+        return True
