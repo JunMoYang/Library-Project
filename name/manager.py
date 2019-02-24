@@ -2,8 +2,8 @@ import operator
 import unicodedata
 
 
-# "namesManager"는 'name'의 '유효성 검사'및 '필요한 기능'들이 포함됩니다.
-class namesManager:
+# "names"는 'name'의 '유효성 검사'및 '필요한 기능'들이 포함됩니다.
+class names:
     def __init__(self, name1, name2):
         self.__name1 = name1
         self.__name2 = name2

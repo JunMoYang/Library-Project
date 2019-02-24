@@ -27,7 +27,7 @@ https://github.com/neotune/python-korean-handler
 """
 
 
-class koreanManager:
+class korean:
     # 유니코드 한글 시작 : 44032, 끝 : 55199
     __baseCode, __choSung, __jungSung = 44032, 588, 28
 
